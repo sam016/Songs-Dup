@@ -13,7 +13,7 @@ A python script which deletes duplicate songs in a directory by reading thier me
 
 - Install [Python 3](https://www.python.org/downloads/)
 - Install the requirements  
- - [pytaglib](https://pypi.python.org/pypi/pytaglib)
+  - [pytaglib](https://pypi.python.org/pypi/pytaglib)
     
 Following is a quick way to install dependencies:
 ```
