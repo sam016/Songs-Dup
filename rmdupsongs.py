@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import taglib
 import argparse
@@ -56,9 +56,9 @@ def main():
 
 
 def get_input_params():
-	parser = argparse.ArgumentParser()
+	parser = argparse.ArgumentParser(description='Removes duplicate songs by reading the meta tags')
 	parser.add_argument('directory', help='Path to the directory')
-	parser.add_argument('rubbish', help='Rubbish words', nargs='*')
+	parser.add_argument('--rubbish', help='Rubbish words', nargs='*')
 	args = parser.parse_args()
 
 	return args
