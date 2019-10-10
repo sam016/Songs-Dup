@@ -188,4 +188,4 @@ def process_audio_tag(options, dir, filename):
 
 if __name__ == '__main__':
 	main()
-	print(CLR_GREEN + 'Finished.')
+	print(CLR_GREEN + 'Finished deleting duplicate songs, enjoy your music :)')
