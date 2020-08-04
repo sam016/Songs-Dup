@@ -12,9 +12,10 @@ A python script which deletes duplicate songs in a directory by reading thier me
 ## 2. Requirements
 
 - Install [Python 3](https://www.python.org/downloads/)
-- Install the requirements  
+- Install [pytaglib](https://pypi.python.org/pypi/pytaglib) dependencies from here: https://github.com/supermihi/pytaglib#installation-notes
+- Install the requirements
   - [pytaglib](https://pypi.python.org/pypi/pytaglib)
-    
+
 Following is a quick way to install dependencies:
 ```
     pip install -r requirements.txt
@@ -22,10 +23,6 @@ Following is a quick way to install dependencies:
 
 ## 3. How to use
 
-In linux,      
-`./rmdupsongs.py directory_path`
-
-In windows,  
 `python rmdupsongs.py directory_path`
 
 

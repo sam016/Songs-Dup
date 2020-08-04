@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 
 import argparse
 import os
@@ -30,15 +29,15 @@ CLR_LIGHT_PURPLE = '\033[95m'
 CLR_LIGHT_CYAN = '\033[96m'
 CLR_LIGHT_DARKCYAN = '\033[36m'
 
-result = {}
-
-
 def main():
     params = get_input_params()
     dir_path = params.directory
 
-    str_rubbish = ('|'.join(('(' + re.escape(item) + ')')
+    if params.rubbish is not None:
+        str_rubbish = ('|'.join(('(' + re.escape(item) + ')')
                             for item in params.rubbish))
+    else:
+        str_rubbish = ''
 
     if not os.path.exists(dir_path):
         print(CLR_LIGHT_RED + 'Directory does not exist')
@@ -100,22 +99,22 @@ def process_result(result, dir_root):
         ind_sel = input(
             "\r\nChoose which file to keep [1 - {0}]:\n> ".format(count_files))
 
-        ind_sel = 0 if ind_sel is '' else ind_sel
+        ind_sel = 0 if ind_sel == '' else ind_sel
 
         try:
             ind_sel = int(ind_sel)
         except:
             ind_sel = 0
 
-        if ind_sel is 0:
+        if ind_sel == 0:
             print('%sSkipping.%s' % (CLR_RED, CLR_END))
         else:
-            for it in range(0, count_files):
-                if ind_sel == it:
+            for ind in range(0, count_files):
+                if ind_sel == ind:
                     pass
                 else:
                     try:
-                        os.remove(files[it].path)
+                        os.remove(files[ind].path)
                     except Exception as e:
                         print('Error while removing the file.')
 
@@ -123,15 +122,13 @@ def process_result(result, dir_root):
 
 
 def process_directory(directory, options, fx_each_match):
-    listfiles = []
     match_ext = "^.+(" + '|'.join(options['filters']) + ")$"
     count_dirs = 0
     count_files = 0
     count_match_files = 0
     options['result'] = {}
 
-    for root, dirs, files in os.walk(directory):
-        path = root.split(os.sep)
+    for root, _, files in os.walk(directory):
         count_dirs += 1
         for file in files:
             count_files += 1
@@ -139,25 +136,33 @@ def process_directory(directory, options, fx_each_match):
                 count_match_files += 1
                 fx_each_match(options, root, file)
 
-    return {'result': options['result'], 'stats': {'count_dirs': count_dirs, 'count_files': count_files, 'count_match_files': count_match_files}}
+    return {
+        'result': options['result'],
+        'stats': {
+            'count_dirs': count_dirs,
+            'count_files': count_files,
+            'count_match_files': count_match_files,
+        },
+    }
 
 
 # cleans the string and array
 def clean_item(item, rubbish):
     if item is None:
-        return
+        return None
 
-    if type(item) is str:
+    if isinstance(item, str):
         return re.sub(rubbish, '', item).strip()
-    elif type(item) is list:
+
+    if isinstance(item, list):
         list_new = []
         for listitem in item:
             list_new.append(clean_item(listitem, rubbish))
         return list_new
-    else:
-        pass
 
+    return None
 
+# process tags in mp2 file
 def process_audio_tag(options, dir, filename):
     path_file = dir + '/' + filename
     file = taglib.File(path_file)
