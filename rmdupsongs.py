@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 
-import taglib
 import argparse
 import os
 import re
 import sys
+
+import taglib
 
 DEBUG_MODE = False
 
@@ -36,13 +37,15 @@ def main():
     params = get_input_params()
     dir_path = params.directory
 
-    str_rubbish = ('|'.join(('(' + re.escape(item) + ')') for item in params.rubbish))
+    str_rubbish = ('|'.join(('(' + re.escape(item) + ')')
+                            for item in params.rubbish))
 
     if not os.path.exists(dir_path):
         print(CLR_LIGHT_RED + 'Directory does not exist')
         sys.exit()
 
-    dir_res = process_directory(dir_path, {'filters':AUDIO_EXTS, 'rubbish':str_rubbish}, process_audio_tag)
+    dir_res = process_directory(
+        dir_path, {'filters': AUDIO_EXTS, 'rubbish': str_rubbish}, process_audio_tag)
 
     stats = dir_res['stats']
     result = dir_res['result']
@@ -56,7 +59,8 @@ def main():
 
 
 def get_input_params():
-    parser = argparse.ArgumentParser(description='Removes duplicate songs by reading the meta tags')
+    parser = argparse.ArgumentParser(
+        description='Removes duplicate songs by reading the meta tags')
     parser.add_argument('directory', help='Path to the directory')
     parser.add_argument('--rubbish', help='Rubbish words', nargs='*')
     args = parser.parse_args()
