@@ -37,3 +37,7 @@ Following is a quick way to install dependencies:
 	  -h, --help            show this help message and exit
 	  --rubbish [RUBBISH [RUBBISH ...]]
 	                        Rubbish words
+
+## Credits
+
+1-second-of-silence.mp3 is from https://github.com/anars/blank-audio
