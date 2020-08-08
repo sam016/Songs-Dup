@@ -6,15 +6,12 @@ import os
 import re
 
 
-def get_files(directory, extensions=None, log_level=None):
+def get_files(directory, extensions=None):
     """Gets the list of files in a directory and sub-directory
 
     Args:
         directory (str): path of directory
         extensions (List[str]): list of extensions to search
-
-    Returns:
-        list[str]: [description]
     """
 
     match_ext = "^.+(" + '|'.join(extensions) + ")$" if extensions else None
@@ -32,7 +29,3 @@ def get_files(directory, extensions=None, log_level=None):
                 files.append((root, file, os.path.join(root, file)))
 
     return (files, count_dirs, count_files, count_match_files)
-
-
-def remove_files():
-    pass

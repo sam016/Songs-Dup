@@ -3,7 +3,7 @@ import os
 import inspect
 import shutil
 import taglib
-from utils.rmdupsongs import process_audio_tag
+from utils.rmdupsongs import process_audio_tag, get_tag_count
 
 cur_path = os.path.dirname(os.path.abspath(inspect.getsourcefile(lambda: 0)))
 test_mp3_path = os.path.join(cur_path, '1-second-of-silence.mp3')
@@ -14,7 +14,7 @@ def_file_info = [
     ('file_02.mp3', 'artist_02', 'album_02', 'title_02'),
     ('file_03.mp3', 'artist_03', 'album_03', 'title_03'),
     ('file_04.mp3', 'artist_04', 'album_04', 'title_04'),
-    ('file_05.mp3', 'artist_05', 'album_05', 'title_05'),
+    ('file_05.mp3', 'artist_01', 'album_01', 'title_01'),
 ]
 
 
@@ -31,6 +31,8 @@ class TestFiles:
             song.tags['ALBUM'] = album_name
             song.tags['ARTIST'] = artist_name
             song.tags['TITLE'] = song_title
+
+            song.save()
 
     def remove_dir(self, dir):
         if os.path.exists(dir):
@@ -50,8 +52,57 @@ class TestWhenFilesArePresent(TestFiles, unittest.TestCase):
     def tearDown(self):
         self.remove_dir(test_data_path)
 
-    def test_audio_tags(self):
+    def test_process_audio_tag(self):
         res = process_audio_tag(os.path.join(test_data_path, 'file_01.mp3'))
+        self.assertEqual(res, ('artist_01', 'album_01', 'title_01'))
+
+        res = process_audio_tag(os.path.join(test_data_path, 'file_02.mp3'))
+        self.assertEqual(res, ('artist_02', 'album_02', 'title_02'))
+
+        res = process_audio_tag(os.path.join(test_data_path, 'file_05.mp3'))
+        self.assertEqual(res, ('artist_01', 'album_01', 'title_01'))
+
+    def test_tag_count_for_files(self):
+        files = [
+            ('', 'file_01.mp3', os.path.join(test_data_path, 'file_01.mp3')),
+            ('', 'file_02.mp3', os.path.join(test_data_path, 'file_02.mp3')),
+            ('', 'file_03.mp3', os.path.join(test_data_path, 'file_03.mp3')),
+            ('', 'file_04.mp3', os.path.join(test_data_path, 'file_04.mp3')),
+            ('', 'file_05.mp3', os.path.join(test_data_path, 'file_05.mp3')),
+        ]
+
+        tag_count = get_tag_count(files)
+
+        self.assertEqual(tag_count, {
+            'artist_01|title_01': {
+                'count': 2,
+                'files': ['file_01.mp3', 'file_05.mp3'],
+                'artist': 'artist_01',
+                'album': 'album_01',
+                'title': 'title_01'
+            },
+            'artist_02|title_02': {
+                'count': 1,
+                'files': ['file_02.mp3'],
+                'artist': 'artist_02',
+                'album': 'album_02',
+                'title': 'title_02'
+            },
+            'artist_03|title_03': {
+                'count': 1,
+                'files': ['file_03.mp3'],
+                'artist': 'artist_03',
+                'album': 'album_03',
+                'title': 'title_03'
+            },
+            'artist_04|title_04': {
+                'count': 1,
+                'files': ['file_04.mp3'],
+                'artist': 'artist_04',
+                'album': 'album_04',
+                'title': 'title_04'
+            }
+        })
 
 
 if __name__ == '__main__':
