@@ -38,6 +38,10 @@ Following is a quick way to install dependencies:
 	  --rubbish [RUBBISH [RUBBISH ...]]
 	                        Rubbish words
 
+## 4. Tests
+
+`pytest --cov-report term  --cov=.`
+
 ## Credits
 
 1-second-of-silence.mp3 is from https://github.com/anars/blank-audio

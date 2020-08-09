@@ -3,7 +3,7 @@ import os
 import inspect
 import shutil
 import taglib
-from utils.rmdupsongs import process_audio_tag, get_tag_count
+from utils.rmdupsongs import process_audio_tag, get_tag_count, remove_single_tags
 
 cur_path = os.path.dirname(os.path.abspath(inspect.getsourcefile(lambda: 0)))
 test_mp3_path = os.path.join(cur_path, '1-second-of-silence.mp3')
@@ -13,7 +13,7 @@ def_file_info = [
     ('file_01.mp3', 'artist_01', 'album_01', 'title_01'),
     ('file_02.mp3', 'artist_02', 'album_02', 'title_02'),
     ('file_03.mp3', 'artist_03', 'album_03', 'title_03'),
-    ('file_04.mp3', 'artist_04', 'album_04', 'title_04'),
+    ('file_04.mp3', 'artist_01', 'album_01', 'title_01'),
     ('file_05.mp3', 'artist_01', 'album_01', 'title_01'),
 ]
 
@@ -75,8 +75,8 @@ class TestWhenFilesArePresent(TestFiles, unittest.TestCase):
 
         self.assertEqual(tag_count, {
             'artist_01|title_01': {
-                'count': 2,
-                'files': ['file_01.mp3', 'file_05.mp3'],
+                'count': 3,
+                'files': ['file_01.mp3', 'file_04.mp3', 'file_05.mp3'],
                 'artist': 'artist_01',
                 'album': 'album_01',
                 'title': 'title_01'
@@ -94,13 +94,36 @@ class TestWhenFilesArePresent(TestFiles, unittest.TestCase):
                 'artist': 'artist_03',
                 'album': 'album_03',
                 'title': 'title_03'
+            }
+        })
+
+    def test_remove_single_tags(self):
+        arg = {
+            'artist_01|title_01': {
+                'count': 2,
+                'files': ['file_01.mp3', 'file_05.mp3'],
+                'artist': 'artist_01',
+                'album': 'album_01',
+                'title': 'title_01'
             },
-            'artist_04|title_04': {
+            'artist_02|title_02': {
                 'count': 1,
-                'files': ['file_04.mp3'],
-                'artist': 'artist_04',
-                'album': 'album_04',
-                'title': 'title_04'
+                'files': ['file_02.mp3'],
+                'artist': 'artist_02',
+                'album': 'album_02',
+                'title': 'title_02'
+            }
+        }
+
+        result = remove_single_tags(arg)
+
+        self.assertEqual(result, {
+            'artist_01|title_01': {
+                'count': 2,
+                'files': ['file_01.mp3', 'file_05.mp3'],
+                'artist': 'artist_01',
+                'album': 'album_01',
+                'title': 'title_01'
             }
         })
 
