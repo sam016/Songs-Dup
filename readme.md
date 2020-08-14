@@ -40,8 +40,13 @@ Following is a quick way to install dependencies:
 
 ## 4. Tests
 
-`pytest --cov-report term  --cov=.`
+1. Install [tox](https://tox.readthedocs.io/en/latest/install.html)
+2. Run tox
 
-## Credits
+    ```
+    tox
+    ```
 
-1-second-of-silence.mp3 is from https://github.com/anars/blank-audio
+## 5. Credits
+
+`1-second-of-silence.mp3` is from https://github.com/anars/blank-audio
