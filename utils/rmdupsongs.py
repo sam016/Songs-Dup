@@ -59,8 +59,8 @@ def process_files_result(result, dir_root, dry_run=False):
         files = result[key]['files']
         count_files = result[key]['count']
 
-        print('\r\n%d/%d' % (ind_result, count_result), end=' - ')
-        cprint('%s:%d\r\n' % (key, count_files), color='magenta')
+        print('\n%d/%d' % (ind_result, count_result), end=' - ')
+        cprint('%s [%d]\n' % (key, count_files), color='magenta')
         cprint('    0 - Skip (Default)', color='red')
 
         for file in files:
@@ -73,7 +73,7 @@ def process_files_result(result, dir_root, dry_run=False):
             continue
         else:
             ind_sel = input(
-                "\r\nChoose which file to keep [1 - {0}]:\n> ".format(count_files))
+                "\nChoose which file to keep [1 - {0}]:\n> ".format(count_files))
 
         ind_sel = 0 if ind_sel == '' else ind_sel
 

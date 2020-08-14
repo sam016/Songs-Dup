@@ -48,8 +48,8 @@ class TestFiles:
 class TestWhenFilesArePresent(TestFiles, unittest.TestCase):
 
     @pytest.fixture(autouse=True)
-    def capfd(self, capfd):
-        self.capfd = capfd
+    def capsys(self, capsys):
+        self.capsys = capsys
 
     # Only use setUp() and tearDown() if necessary
 
@@ -148,12 +148,26 @@ class TestWhenFilesArePresent(TestFiles, unittest.TestCase):
             }
         }
 
-        # os.environ['COLORED'] = 'False'
+        os.environ['COLORED'] = 'False'
 
         process_files_result(arg, test_data_path, dry_run=True)
 
-        self.assertTrue(os.path.exists(os.path.join(test_data_path, 'file_01.mp3')))
-        self.assertTrue(os.path.exists(os.path.join(test_data_path, 'file_05.mp3')))
+        out, err = self.capsys.readouterr()
+
+        self.assertEqual(err, '')
+        self.assertEqual(out, "\n" +
+                         "1/1 - artist_01|title_01 [2]\n" +
+                         "\n" +
+                         "    0 - Skip (Default)\n" +
+                         "    1 - file_01.mp3\n" +
+                         "    2 - file_05.mp3\n" +
+                         "\n" +
+                         "    DRY-RUN: skipping\n")
+
+        self.assertTrue(os.path.exists(
+            os.path.join(test_data_path, 'file_01.mp3')))
+        self.assertTrue(os.path.exists(
+            os.path.join(test_data_path, 'file_05.mp3')))
 
 
 if __name__ == '__main__':
