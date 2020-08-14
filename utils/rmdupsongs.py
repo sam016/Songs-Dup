@@ -8,14 +8,16 @@ from colorama import Fore, Style
 import taglib
 
 from .file_manager import get_files
+from .cprint import cprint
 
 DEBUG_MODE = False
 
 AUDIO_EXTS = ['mp3']
 
+
 def remove_dup_songs(dir_path, params):
     if not os.path.exists(dir_path):
-        print(Fore.LIGHTRED_EX + 'Directory does not exist')
+        cprint('Directory does not exist', text='red')
         sys.exit()
 
     files, count_dirs, count_files, count_match_files = get_files(
@@ -57,18 +59,18 @@ def process_files_result(result, dir_root, dry_run=False):
         files = result[key]['files']
         count_files = result[key]['count']
 
-        print('\r\n%d/%d - %s%s:%d%s\r\n' %
-              (ind_result, count_result, Fore.MAGENTA, key, count_files, Fore.RESET))
-        print('%s    0 - Skip (Default) %s' % (Fore.RED, Fore.RESET))
+        print('\r\n%d/%d' % (ind_result, count_result), end=' - ')
+        cprint('%s:%d\r\n' % (key, count_files), color='magenta')
+        cprint('    0 - Skip (Default)', color='red')
 
         for file in files:
-            print('   %s%2d%s - %s' % (Fore.BLUE, ind_file,
-                                       Fore.RESET, file.path.replace(dir_root, '')))
+            cprint('   %2d' % (ind_file), color='blue', end=' - ')
+            cprint('%2s' % (file.replace(dir_root, '')))
             ind_file += 1
 
         if dry_run:
-            ind_sel = 0
-            print('DRY-RUN: skipping')
+            cprint('\n    DRY-RUN: skipping', color='yellow')
+            continue
         else:
             ind_sel = input(
                 "\r\nChoose which file to keep [1 - {0}]:\n> ".format(count_files))
@@ -81,7 +83,7 @@ def process_files_result(result, dir_root, dry_run=False):
             ind_sel = 0
 
         if ind_sel == 0:
-            print('%sSkipping.%s' % (Fore.RED, Fore.RESET))
+            cprint('Skipping.', color='red')
         else:
             for ind in range(0, count_files):
                 if ind_sel == ind:

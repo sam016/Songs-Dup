@@ -1,9 +1,15 @@
 import unittest
 import os
 import inspect
+import pytest
 import shutil
 import taglib
-from utils.rmdupsongs import process_audio_tag, get_tag_count, remove_single_tags
+from utils.rmdupsongs import (
+    process_audio_tag,
+    get_tag_count,
+    remove_single_tags,
+    process_files_result
+)
 
 cur_path = os.path.dirname(os.path.abspath(inspect.getsourcefile(lambda: 0)))
 test_mp3_path = os.path.join(cur_path, '1-second-of-silence.mp3')
@@ -40,6 +46,10 @@ class TestFiles:
 
 
 class TestWhenFilesArePresent(TestFiles, unittest.TestCase):
+
+    @pytest.fixture(autouse=True)
+    def capfd(self, capfd):
+        self.capfd = capfd
 
     # Only use setUp() and tearDown() if necessary
 
@@ -126,6 +136,24 @@ class TestWhenFilesArePresent(TestFiles, unittest.TestCase):
                 'title': 'title_01'
             }
         })
+
+    def test_process_files_result_dry_run(self):
+        arg = {
+            'artist_01|title_01': {
+                'count': 2,
+                'files': ['file_01.mp3', 'file_05.mp3'],
+                'artist': 'artist_01',
+                'album': 'album_01',
+                'title': 'title_01'
+            }
+        }
+
+        # os.environ['COLORED'] = 'False'
+
+        process_files_result(arg, test_data_path, dry_run=True)
+
+        self.assertTrue(os.path.exists(os.path.join(test_data_path, 'file_01.mp3')))
+        self.assertTrue(os.path.exists(os.path.join(test_data_path, 'file_05.mp3')))
 
 
 if __name__ == '__main__':
