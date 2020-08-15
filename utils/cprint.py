@@ -1,9 +1,17 @@
+'''
+cprint module to color print
+
+color can be disabled by setting 'False' in env['COLORED']
+'''
+
 import os
-from colorama import Fore, Style
 from termcolor import cprint as term_cprint
 
 
 def cprint(*text, color=None, on_color=None, attrs=None, **kwargs):
+    '''
+    color print
+    '''
     if os.environ.get('COLORED') == 'False':
         print(*text, **kwargs)
     else:

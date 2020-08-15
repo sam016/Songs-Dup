@@ -1,10 +1,8 @@
 
-import argparse
 import os
 import re
 import sys
 
-from colorama import Fore, Style
 import taglib
 
 from .file_manager import get_files
@@ -34,12 +32,13 @@ class SongManager:
         result = self.__get_tag_count__(files, rubbish=params.rubbish)
 
         # removes the non-repeating tags from result
-        result = self.__remove_single_tags__(result)
+        result = SongManager.__remove_single_tags__(result)
 
         self.__process_files_result__(result, dir_path, dry_run=params.dry_run)
 
 
-    def __remove_single_tags__(self, result):
+    @staticmethod
+    def __remove_single_tags__(result):
         """cleans result: removes the non-repeating items
         """
         keys = [k for k in result.keys()]
@@ -75,16 +74,15 @@ class SongManager:
             if dry_run:
                 cprint('\n    DRY-RUN: skipping', color='yellow')
                 continue
-            else:
-                ind_sel = tmp_input(
-                    "\nChoose which file to keep [1 - {0}]:\n> ".format(count_files))
 
-            print('ind_sel=', ind_sel)
+            ind_sel = tmp_input(
+                "\nChoose which file to keep [1 - {0}]:\n> ".format(count_files))
+
             ind_sel = 0 if ind_sel == '' else ind_sel
 
             try:
                 ind_sel = int(ind_sel)
-            except:
+            except ValueError:
                 ind_sel = 0
 
             if ind_sel == 0:
@@ -117,7 +115,7 @@ class SongManager:
             artist, album, title = self.__process_audio_tag__(
                 file_path, rubbish=str_rubbish)
 
-            key = self.__get_key__(artist, album, title)
+            key = SongManager.__get_key__(artist, title)
 
             if key in result:
                 result[key]['count'] += 1
@@ -150,8 +148,8 @@ class SongManager:
 
         return None
 
-
-    def __get_key__(self, artist, album, title):
+    @staticmethod
+    def __get_key__(artist, title):
         return artist + '|' + title
 
 
