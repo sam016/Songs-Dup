@@ -1,2 +1,2 @@
-from .rmdupsongs import remove_dup_songs
+from .song_manager import SongManager
 from .cprint import cprint
