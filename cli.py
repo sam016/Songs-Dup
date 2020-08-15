@@ -1,8 +1,22 @@
+"""
+main cli.py
+
+usage: rmdupsongs.py [-h] [--rubbish [RUBBISH [RUBBISH ...]]] directory
+
+Removes duplicate songs by reading the meta tags
+
+positional arguments:
+    directory             Path to the directory
+
+optional arguments:
+    -h, --help            show this help message and exit
+    --rubbish [RUBBISH [RUBBISH ...]]
+                        Rubbish words
+"""
+
 import argparse
-import os
-import sys
-from utils import remove_dup_songs
 from colorama import init, Fore
+from utils import SongManager
 
 
 def main():
@@ -11,7 +25,9 @@ def main():
     params = get_input_params()
     dir_path = params.directory
 
-    remove_dup_songs(dir_path, params)
+    song_manager = SongManager()
+
+    song_manager.remove_dup_songs(dir_path, params)
 
 
 def get_input_params():
@@ -22,10 +38,14 @@ def get_input_params():
     parser.add_argument('directory', help='Path to the directory')
     parser.add_argument('--rubbish', help='Rubbish words', nargs='*')
     parser.add_argument(
-        '--dry-run', help='Dry runs the execution without affecting actual files', default=False, dest='dry_run')
+        '--dry-run',
+        help='Dry runs the execution without affecting actual files',
+        default=False,
+        dest='dry_run')
     args = parser.parse_args()
 
     return args
+
 
 if __name__ == '__main__':
     init(autoreset=True)
