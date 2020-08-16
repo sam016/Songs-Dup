@@ -114,6 +114,7 @@ class TestWhenFilesArePresent(TestFiles, unittest.TestCase):
             }
         })
 
+    @patch.dict(os.environ, {'COLORED': 'False'})
     def test_process_files_result_should_not_delete_if_dry_run(self):
         song_manager = SongManager()
 
@@ -126,8 +127,6 @@ class TestWhenFilesArePresent(TestFiles, unittest.TestCase):
                 'title': 'title_01'
             }
         }
-
-        os.environ['COLORED'] = 'False'
 
         song_manager.__process_files_result__(
             arg, test_data_path, dry_run=True)
@@ -149,6 +148,7 @@ class TestWhenFilesArePresent(TestFiles, unittest.TestCase):
             os.path.join(test_data_path, './file_05.mp3'),
         ])
 
+    @patch.dict(os.environ, {'COLORED': 'False'})
     def test_process_files_result_should_be_deleted(self):
         song_manager = SongManager()
 
@@ -161,8 +161,6 @@ class TestWhenFilesArePresent(TestFiles, unittest.TestCase):
                 'title': 'title_01'
             }
         }
-
-        os.environ['COLORED'] = 'False'
 
         song_manager.input = lambda x: '2'
         song_manager.__process_files_result__(arg, test_data_path)
@@ -238,6 +236,20 @@ class TestWhenFilesArePresent(TestFiles, unittest.TestCase):
             os.path.join(test_data_path, './dir1/file_03.mp3'),
             os.path.join(test_data_path, "./dir2/file_03.mp3"),
         ])
+
+    @patch.dict(os.environ, {'COLORED': 'False'})
+    def test_remove_dup_songs_when_dir_missing(self):
+        song_manager = SongManager()
+
+        arg = {'rubbish': None, 'dry_run': False}
+        arg_ob = namedtuple('MockArg', arg.keys())(*arg.values())
+
+        song_manager.remove_dup_songs('non-existent-path', arg_ob)
+
+        out, err = self.capsys.readouterr()
+
+        self.assertEqual(err, '')
+        self.assertEqual(out, 'Directory "non-existent-path" does not exist\n')
 
 
 if __name__ == '__main__':

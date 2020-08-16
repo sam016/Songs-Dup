@@ -12,7 +12,7 @@ def cprint(*text, color=None, on_color=None, attrs=None, **kwargs):
     '''
     color print
     '''
-    if os.environ.get('COLORED') == 'False':
+    if os.getenv('COLORED') == 'False':
         print(*text, **kwargs)
     else:
         text_together = ' '.join(text)

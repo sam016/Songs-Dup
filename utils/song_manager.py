@@ -18,8 +18,8 @@ class SongManager:
 
     def remove_dup_songs(self, dir_path, params):
         if not os.path.exists(dir_path):
-            cprint(f'Directory "{dir_path}" does not exist', text='red')
-            sys.exit()
+            cprint(f'Directory "{dir_path}" does not exist', color='red')
+            return
 
         files_result = get_files(dir_path, extensions=AUDIO_EXTS)
 
