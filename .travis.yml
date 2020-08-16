@@ -3,6 +3,10 @@ language: python
 after_success:
     - bash <(curl -s https://codecov.io/bash)
 
+before_install:
+    - sudo apt-get update
+    - sudo apt-get install libtag1-dev
+
 # Install the codecov pip dependency
 install:
     - pip install cython
