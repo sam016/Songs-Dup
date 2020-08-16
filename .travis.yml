@@ -8,14 +8,11 @@ python:
     - '3.7'
     - '3.8'
 
-# after_success:
-#     - bash <(curl -s https://codecov.io/bash)
-
 before_install:
     - sudo apt-get update
     - sudo apt-get install libtag1-dev
 
-# Install the codecov pip dependency
+# Install the ci pip dependency
 install:
     - pip install cython tox coveralls
     - pip install -r requirements.txt

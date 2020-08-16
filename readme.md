@@ -1,5 +1,7 @@
 # Songs-Dup
 
+![Supported python versions](https://img.shields.io/badge/Python-3.5%20%7C%203.6%20%7C%203.7%20%7C%203.8-blue) [![Coverage Status](https://coveralls.io/repos/github/sam016/Songs-Dup/badge.svg?branch=feature/travis-ci)](https://coveralls.io/github/sam016/Songs-Dup?branch=feature/travis-ci)
+
 1. [Introduction](#1-introduction)
 1. [Requirements](#2-requirements)
 1. [How to use](#3-how-to-use)
