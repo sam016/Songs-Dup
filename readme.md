@@ -23,20 +23,21 @@ Following is a quick way to install dependencies:
 
 ## 3. How to use
 
-`python rmdupsongs.py directory_path`
+`python cli.py directory_path`
 
+    usage: cli.py [-h] [--rubbish [RUBBISH [RUBBISH ...]]] [--dry-run] directory
 
-	usage: rmdupsongs.py [-h] [--rubbish [RUBBISH [RUBBISH ...]]] directory
+    Removes duplicate songs by reading the meta tags
 
-	Removes duplicate songs by reading the meta tags
+    positional arguments:
+    directory             Path to the directory
 
-	positional arguments:
-	  directory             Path to the directory
+    optional arguments:
+    -h, --help            show this help message and exit
+    --rubbish [RUBBISH [RUBBISH ...]]
+                          Rubbish words in artist name or song title
+    --dry-run             Dry runs the execution without affecting actual files
 
-	optional arguments:
-	  -h, --help            show this help message and exit
-	  --rubbish [RUBBISH [RUBBISH ...]]
-	                        Rubbish words
 
 ## 4. Tests
 

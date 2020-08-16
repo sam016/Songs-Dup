@@ -1,17 +1,19 @@
 """
 main cli.py
 
-usage: rmdupsongs.py [-h] [--rubbish [RUBBISH [RUBBISH ...]]] directory
+    usage: cli.py [-h] [--rubbish [RUBBISH [RUBBISH ...]]] [--dry-run] directory
 
-Removes duplicate songs by reading the meta tags
+    Removes duplicate songs by reading the meta tags
 
-positional arguments:
+    positional arguments:
     directory             Path to the directory
 
-optional arguments:
+    optional arguments:
     -h, --help            show this help message and exit
     --rubbish [RUBBISH [RUBBISH ...]]
-                        Rubbish words
+                          Rubbish words in artist name or song title
+    --dry-run             Dry runs the execution without affecting actual files
+
 """
 
 import argparse
