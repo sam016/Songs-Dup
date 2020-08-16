@@ -19,10 +19,7 @@ class TestFileManager(TestFiles, unittest.TestCase):
         result = get_files(test_data_path)
         self.maxDiff = None
         print('--re', json.dumps(result))
-        self.assertDictEqual(result, {'count_dirs': 3,
-                                      'count_files': 15,
-                                      'count_match_files': 15,
-                                      'files': ['./file_01.mp3',
+        self.assertCountEqual(result['files'], ['./file_01.mp3',
                                                 './file_02.mp3',
                                                 './file_03.mp3',
                                                 './file_04.mp3',
@@ -36,7 +33,12 @@ class TestFileManager(TestFiles, unittest.TestCase):
                                                 './dir2/file_02.mp3',
                                                 './dir2/file_03.mp3',
                                                 './dir2/file_04.mp3',
-                                                './dir2/file_05.mp3']})
+                                                './dir2/file_05.mp3'])
+        del result['files']
+
+        self.assertDictEqual(result, {'count_dirs': 3,
+                                      'count_files': 15,
+                                      'count_match_files': 15})
 
     def test_get_files_when_dir_missing(self):
         with self.assertRaises(ValueError) as ex:
