@@ -17,24 +17,24 @@ class TestFileManager(TestFiles, unittest.TestCase):
     def test_get_files_when_dir_exist(self):
         result = get_files(test_data_path)
         self.maxDiff = None
-        self.assertEqual(result, {'count_dirs': 3,
-                                  'count_files': 15,
-                                  'count_match_files': 15,
-                                  'files': ['./file_01.mp3',
-                                            './file_02.mp3',
-                                            './file_03.mp3',
-                                            './file_04.mp3',
-                                            './file_05.mp3',
-                                            './dir1/file_01.mp3',
-                                            './dir1/file_02.mp3',
-                                            './dir1/file_03.mp3',
-                                            './dir1/file_04.mp3',
-                                            './dir1/file_05.mp3',
-                                            './dir2/file_01.mp3',
-                                            './dir2/file_02.mp3',
-                                            './dir2/file_03.mp3',
-                                            './dir2/file_04.mp3',
-                                            './dir2/file_05.mp3']})
+        self.assertDictEqual(result, {'count_dirs': 3,
+                                      'count_files': 15,
+                                      'count_match_files': 15,
+                                      'files': ['./file_01.mp3',
+                                                './file_02.mp3',
+                                                './file_03.mp3',
+                                                './file_04.mp3',
+                                                './file_05.mp3',
+                                                './dir1/file_01.mp3',
+                                                './dir1/file_02.mp3',
+                                                './dir1/file_03.mp3',
+                                                './dir1/file_04.mp3',
+                                                './dir1/file_05.mp3',
+                                                './dir2/file_01.mp3',
+                                                './dir2/file_02.mp3',
+                                                './dir2/file_03.mp3',
+                                                './dir2/file_04.mp3',
+                                                './dir2/file_05.mp3']})
 
     def test_get_files_when_dir_missing(self):
         with self.assertRaises(ValueError) as ex:

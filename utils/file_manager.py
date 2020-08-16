@@ -2,6 +2,7 @@
 Contains FS related function
 """
 
+import bisect
 import os
 import re
 
@@ -34,10 +35,11 @@ def get_files(directory, extensions=None):
             count_files += 1
             if match_ext is None or re.match(match_ext, file):
                 count_match_files += 1
-                all_files.append(os.path.join(rel_dir_path, file))
+                bisect.insort(
+                    all_files, (count_dirs, os.path.join(rel_dir_path, file)))
 
     return {
-        'files': all_files,
+        'files': [f[1] for f in all_files],
         'count_dirs': count_dirs,
         'count_files': count_files,
         'count_match_files': count_match_files,

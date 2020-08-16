@@ -50,7 +50,7 @@ class SongManager:
     def __process_files_result__(self, result, dir_root, dry_run=False):
         tmp_input = self.input if self.input else input
         sorted_result = sorted(result, key=(
-            lambda key: result[key]['count']), reverse=True)
+            lambda key: (result[key]['count'], key)), reverse=True)
         ind_result = 1
         count_result = len(sorted_result)
 

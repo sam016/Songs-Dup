@@ -186,12 +186,12 @@ class TestWhenFilesArePresent(TestFiles, unittest.TestCase):
             os.path.join(test_data_path, './file_05.mp3'),
 
             #
-            os.path.join(test_data_path, './file_02.mp3'),
-            os.path.join(test_data_path, './dir1/file_02.mp3'),
-            os.path.join(test_data_path, './dir2/file_02.mp3'),
+            os.path.join(test_data_path, './file_03.mp3'),
+            os.path.join(test_data_path, './dir1/file_03.mp3'),
+            os.path.join(test_data_path, './dir2/file_03.mp3'),
 
             #
-            os.path.join(test_data_path, './dir1/file_03.mp3'),
+            os.path.join(test_data_path, './dir1/file_02.mp3'),
         ])
 
         self.assertFilesShouldNotExist([
@@ -205,8 +205,8 @@ class TestWhenFilesArePresent(TestFiles, unittest.TestCase):
             os.path.join(test_data_path, "./dir2/file_05.mp3"),
 
             #
-            os.path.join(test_data_path, "./file_03.mp3"),
-            os.path.join(test_data_path, "./dir2/file_03.mp3"),
+            os.path.join(test_data_path, "./file_02.mp3"),
+            os.path.join(test_data_path, "./dir2/file_02.mp3"),
         ])
 
     def test_remove_dup_songs_dry_run(self):
