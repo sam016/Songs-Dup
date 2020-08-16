@@ -48,7 +48,7 @@ class TestFiles(unittest.TestCase):
 
         for file in files:
             self.assertTrue(os.path.exists(file),
-                            msg=f'{file} doesn\'t exist')
+                            msg='{} doesn\'t exist'.format(file))
 
     def assertFilesShouldNotExist(self, files):
         if isinstance(files, str):
@@ -59,4 +59,4 @@ class TestFiles(unittest.TestCase):
 
         for file in files:
             self.assertFalse(os.path.exists(file),
-                             msg=f'{file} exists')
+                             msg='{} exists'.format(file))

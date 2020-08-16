@@ -16,7 +16,7 @@ def get_files(directory, extensions=None):
     directory = os.path.realpath(directory)
 
     if not os.path.exists(directory):
-        raise ValueError(f'Directory "{directory}" doesn\'t exist')
+        raise ValueError('Directory "{}" doesn\'t exist'.format(directory))
 
     match_ext = "^.+(" + '|'.join(extensions) + ")$" if extensions else None
     count_dirs = 0
