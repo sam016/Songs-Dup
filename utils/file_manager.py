@@ -3,6 +3,7 @@ Contains FS related function
 """
 
 import bisect
+import json
 import os
 import re
 
@@ -37,6 +38,9 @@ def get_files(directory, extensions=None):
                 count_match_files += 1
                 bisect.insort(
                     all_files, (count_dirs, os.path.join(rel_dir_path, file)))
+
+    print('--all_files', all_files)
+    print('--all_files.json', json.dumps(all_files))
 
     return {
         'files': [f[1] for f in all_files],
