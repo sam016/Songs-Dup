@@ -9,7 +9,7 @@ before_install:
 
 # Install the codecov pip dependency
 install:
-    - pip install cython
+    - pip install cython tox
     - pip install -r requirements.txt
 
 script:
