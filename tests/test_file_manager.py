@@ -1,8 +1,6 @@
 import unittest
-import pytest
-import re
-from .base import (TestFiles, test_data_path)
 from utils.file_manager import (get_files)
+from .base import (TestFiles, test_data_path)
 
 
 class TestFileManager(TestFiles, unittest.TestCase):
@@ -18,6 +16,7 @@ class TestFileManager(TestFiles, unittest.TestCase):
 
     def test_get_files_when_dir_exist(self):
         result = get_files(test_data_path)
+        self.maxDiff = None
         self.assertEqual(result, {'count_dirs': 3,
                                   'count_files': 15,
                                   'count_match_files': 15,

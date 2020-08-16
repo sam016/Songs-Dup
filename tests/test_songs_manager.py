@@ -175,6 +175,8 @@ class TestWhenFilesArePresent(TestFiles, unittest.TestCase):
         song_manager = SongManager()
         song_manager.input = mock_input
 
+        self.maxDiff = None
+
         arg = {'rubbish': None, 'dry_run': False}
         arg_ob = namedtuple('MockArg', arg.keys())(*arg.values())
 
