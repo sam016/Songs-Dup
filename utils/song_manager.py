@@ -18,24 +18,24 @@ class SongManager:
 
     def remove_dup_songs(self, dir_path, params):
         if not os.path.exists(dir_path):
-            cprint('Directory does not exist', text='red')
+            cprint(f'Directory "{dir_path}" does not exist', text='red')
             sys.exit()
 
-        files, count_dirs, count_files, count_match_files = get_files(
-            dir_path, extensions=AUDIO_EXTS)
+        files_result = get_files(dir_path, extensions=AUDIO_EXTS)
 
-        print('Total directories:', count_dirs)
-        print('Total files:', count_files)
-        print('Total audio files:', count_match_files)
+        print('Total directories:', files_result['count_dirs'])
+        print('Total files:', files_result['count_files'])
+        print('Total audio files:', files_result['count_match_files'])
 
         # gets the count of artist-title from list of files
-        result = self.__get_tag_count__(files, rubbish=params.rubbish)
+        result = self.__get_tag_count__(dir_path,
+                                        files_result['files'],
+                                        rubbish=params.rubbish)
 
         # removes the non-repeating tags from result
         result = SongManager.__remove_single_tags__(result)
 
         self.__process_files_result__(result, dir_path, dry_run=params.dry_run)
-
 
     @staticmethod
     def __remove_single_tags__(result):
@@ -47,7 +47,6 @@ class SongManager:
                 del result[key]
 
         return result
-
 
     def __process_files_result__(self, result, dir_root, dry_run=False):
         tmp_input = self.input if self.input else input
@@ -89,15 +88,21 @@ class SongManager:
                 cprint('Skipping.', color='red')
             else:
                 ind_sel -= 1
-                try:
-                    os.remove(os.path.join(dir_root, files[ind_sel]))
-                except Exception as e:
-                    print('Error while removing the file.', e)
+                for ind in range(0, count_files):
+
+                    # keep the selected file
+                    if ind == ind_sel:
+                        continue
+
+                    # remove other files
+                    try:
+                        os.remove(os.path.join(dir_root, files[ind]))
+                    except Exception as e:
+                        print('Error while removing the file.', e)
 
             ind_result += 1
 
-
-    def __get_tag_count__(self, files, rubbish=None):
+    def __get_tag_count__(self, dir_path, files, rubbish=None):
         """Processes mp3 files and prepares count of artists with their titles
         """
 
@@ -111,19 +116,19 @@ class SongManager:
             str_rubbish = ''
 
         # iterate thru each mp3 file
-        for (_, file, file_path) in files:
-            artist, album, title = self.__process_audio_tag__(
-                file_path, rubbish=str_rubbish)
+        for file_path in files:
+            artist, album, title = self.__process_audio_tag__(dir_path,
+                                                              file_path, rubbish=str_rubbish)
 
             key = SongManager.__get_key__(artist, title)
 
             if key in result:
                 result[key]['count'] += 1
-                result[key]['files'].append(file)
+                result[key]['files'].append(file_path)
             else:
                 result[key] = {
                     'count': 1,
-                    'files': [file],
+                    'files': [file_path],
                     'artist': artist,
                     'album': album,
                     'title': title,
@@ -131,8 +136,8 @@ class SongManager:
 
         return result
 
-
     # cleans the string and array
+
     def __clean_item__(self, item, rubbish):
         if item is None:
             return None
@@ -152,19 +157,20 @@ class SongManager:
     def __get_key__(artist, title):
         return artist + '|' + title
 
-
-    def __process_audio_tag__(self, file_path, rubbish=''):
+    def __process_audio_tag__(self, dir_path, file_path, rubbish=''):
         """Process audio tags for a mp3 file
         """
 
-        if not os.path.exists(file_path):
-            raise ValueError('File not found: "%s"' % (file_path))
+        full_path = os.path.join(dir_path, file_path)
 
-        file = taglib.File(file_path)
+        if not os.path.exists(full_path):
+            raise ValueError('File not found: "%s"' % (full_path))
+
+        file = taglib.File(full_path)
         tags = file.tags
 
         if DEBUG_MODE:
-            print(file_path)
+            print(full_path)
 
         artist = '?'.join([re.sub(rubbish, '', item).strip() for item in self.__clean_item__(
             tags['ARTIST'], rubbish)]) if 'ARTIST' in tags else 'unknown'

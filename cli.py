@@ -41,6 +41,7 @@ def get_input_params():
         '--dry-run',
         help='Dry runs the execution without affecting actual files',
         default=False,
+        action='store_true',
         dest='dry_run')
     args = parser.parse_args()
 
