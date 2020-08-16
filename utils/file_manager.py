@@ -25,19 +25,23 @@ def get_files(directory, extensions=None):
     count_files = 0
     count_match_files = 0
     all_files = []
+    inc = 0
 
     for root, _, files in os.walk(directory):
         count_dirs += 1
         if root == directory:
             rel_dir_path = root.replace(directory, './')
+            inc = 0
         else:
             rel_dir_path = root.replace(directory, '.')
+            inc = 1
+
         for file in files:
             count_files += 1
             if match_ext is None or re.match(match_ext, file):
                 count_match_files += 1
                 bisect.insort(
-                    all_files, (count_dirs, os.path.join(rel_dir_path, file)))
+                    all_files, (inc, os.path.join(rel_dir_path, file)))
 
     print('--all_files', all_files)
     print('--all_files.json', json.dumps(all_files))
