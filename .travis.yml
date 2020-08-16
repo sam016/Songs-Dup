@@ -8,8 +8,8 @@ python:
     - '3.7'
     - '3.8'
 
-after_success:
-    - bash <(curl -s https://codecov.io/bash)
+# after_success:
+#     - bash <(curl -s https://codecov.io/bash)
 
 before_install:
     - sudo apt-get update
@@ -17,8 +17,9 @@ before_install:
 
 # Install the codecov pip dependency
 install:
-    - pip install cython tox
+    - pip install cython tox coveralls
     - pip install -r requirements.txt
 
 script:
     - tox -e coverage
+    - coveralls
