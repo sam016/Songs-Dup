@@ -5,6 +5,8 @@
 1. [Introduction](#1-introduction)
 1. [Requirements](#2-requirements)
 1. [How to use](#3-how-to-use)
+1. [Tests](#4-tests)
+1. [Credits](#5-credits)
 
 
 ## 1. Introduction
